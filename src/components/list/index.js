@@ -1,21 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Item from '../item';
+import ItemCart from '../item-cart';
 import './style.css';
 
-function List({list, onAddItemInCart, onIncreaseCountAndPrice, onDeleteItemInCart}){
+function List(props) {
   return (
-    <div className='List'>{
-      list.map(item =>
-        <div key={item.code} className='List-item'>
-          <Item
-            item={item}
-            onAddInCart={onAddItemInCart}
-            onIncreaseCountAndPrice={onIncreaseCountAndPrice}
-            onDeleteItemInCart={onDeleteItemInCart} />
-        </div>
+    <ul className='List'>{
+      props.list.map(item =>
+        <li key={item.code} className='List-item'>
+          {item.count ? (
+            <ItemCart
+              item={item}
+              onDeleteItemInCart={props.onDeleteItemInCart} />
+          ) : (
+            <Item
+              item={item}
+              onAddInCart={props.onAddItemInCart}
+              onIncreaseCountAndPrice={props.onIncreaseCountAndPrice} />
+          )}
+        </li>
       )}
-    </div>
+    </ul>
   )
 }
 

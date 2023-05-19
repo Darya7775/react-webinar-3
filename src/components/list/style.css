@@ -1,6 +1,8 @@
-.List{
+.List {
   border-top: 1px dashed #ccc;
-  margin-bottom: 20px;
+  margin: 0 0 20px;
+  padding: 0;
+  list-style: none;
 }
 
 .List-item {

@@ -1,31 +1,38 @@
-.Item {
+.ItemCart {
   display: flex;
   justify-content: flex-start;
   transition: background-color 1s;
 }
 
-.Item-code {
+.ItemCart-code {
   padding: 20px 10px 20px 20px;
 }
 
-.Item-title {
+.ItemCart-title {
   width: 100%;
   padding: 21px 10px;
 }
 
-.Item-price {
+.ItemCart-price {
   width: 50%;
   display: flex;
   justify-content: end;
   padding: 20px 10px;
 }
 
-.Item-actions {
+.ItemCart-count {
+  width: 17%;
+  display: flex;
+  justify-content: end;
+  padding: 20px 14px;
+}
+
+.ItemCart-actions {
   display: flex;
   justify-content: flex-end;
   padding: 20px 20px 20px 15px;
 }
 
-.Item-button {
-  padding: 0 8px;
+.ItemCart-button {
+  padding: 0 10px;
 }
