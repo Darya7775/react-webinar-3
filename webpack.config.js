@@ -51,6 +51,7 @@ if (process.env.NODE_ENV === 'development') {
     static: path.join(__dirname, 'dist'),
     port: 8010,
     historyApiFallback: true,
+    open: true,
   };
 }
 

@@ -1,5 +1,22 @@
 .Controls {
   display: flex;
   justify-content: flex-end;
+  gap: 20px;
   padding: 20px;
+}
+
+.Controls-wrapper {
+  display: flex;
+  gap: 15px;
+  font-size: 18px;
+  line-height: 21px;
+}
+
+.Controls-text {
+  display: block;
+  font-weight: 700;
+}
+
+.Controls-button {
+  padding: 0 10px 0 13px;
 }

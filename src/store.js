@@ -1,5 +1,3 @@
-import {generateCode} from "./utils";
-
 /**
  * Хранилище состояния приложения
  */
@@ -41,48 +39,83 @@ class Store {
   }
 
   /**
-   * Добавление новой записи
+   * Добавление товара в корзину
+   * @param item
    */
-  addItem() {
+  addItemInCart(item) {
     this.setState({
       ...this.state,
-      list: [...this.state.list, {code: generateCode(), title: 'Новая запись'}]
+      list: this.state.list.map(it => {
+              if (it.code === item.code) {
+                return {
+                  ...it,
+                  isCart: true,
+                };
+              }
+              return it;
+            }),
+      cart: {
+        ...this.state.cart,
+        // увеличивается цена товара в корзине
+        totalPrice: this.state.cart.totalPrice + item.price,
+        // увеличивается количество товара в корзине
+        total: this.state.cart.total + 1,
+        // Новый список id товаров в корзине
+        ids: [...this.state.cart.ids, item.code],
+        // Новый список товаров в корзине
+        entities: {...this.state.cart.entities, [item.code]: {code: item.code, title: item.title, price: item.price, count: 1, isCart: true}}
+      }
     })
   };
 
   /**
-   * Удаление записи по коду
-   * @param code
+   * Удаление товара из корзины
+   * @param item
    */
-  deleteItem(code) {
+  deleteItemInCart(item) {
+    const newEntities = { ...this.state.cart.entities};
+    delete newEntities[item.code];
     this.setState({
       ...this.state,
-      // Новый список, в котором не будет удаляемой записи
-      list: this.state.list.filter(item => item.code !== code)
+      list: this.state.list.map(it => {
+              if (it.code === item.code) {
+                return {
+                  ...it,
+                  isCart: false,
+                };
+              }
+              return it;
+            }),
+      cart: {
+        ...this.state.cart,
+        // уменьшается итоговая цена за количество одного товара
+        totalPrice: this.state.cart.totalPrice - (item.price * this.state.cart.entities[item.code].count),
+        // уменьшается количество товара в корзине
+        total: this.state.cart.total - 1,
+        // Новый список, в котором не будет id удаляемого товара
+        ids: this.state.cart.ids.filter(id => item.code !== id),
+        // Новый список товаров в корзине
+        entities: newEntities
+      }
     })
   };
 
   /**
-   * Выделение записи по коду
-   * @param code
+   * Увеличение количества товара и цены
+   * @param item
    */
-  selectItem(code) {
+  increaseCountAndPrice(item) {
     this.setState({
       ...this.state,
-      list: this.state.list.map(item => {
-        if (item.code === code) {
-          // Смена выделения и подсчёт
-          return {
-            ...item,
-            selected: !item.selected,
-            count: item.selected ? item.count : item.count + 1 || 1,
-          };
-        }
-        // Сброс выделения если выделена
-        return item.selected ? {...item, selected: false} : item;
-      })
+      cart: {
+        ...this.state.cart,
+        // увеличивается цена товара в корзине
+        totalPrice: this.state.cart.totalPrice + item.price,
+        // увеличивается количество одного товара в корзине
+        entities: {...this.state.cart.entities, [item.code]: {...this.state.cart.entities[item.code], count: this.state.cart.entities[item.code].count + 1}}
+      }
     })
-  }
+  };
 }
 
 export default Store;
