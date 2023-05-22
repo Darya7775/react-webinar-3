@@ -34,33 +34,34 @@ function App({store}) {
   }
 
   return (
-    <PageLayout>
+    <>
       {openCart ? (
         <>
-          <Head title='Магазин'/>
-          <Controls cart={cart} openCart={() => setOpenCart(!openCart)}/>
-          <List list={list}
-                onAddItemInCart={callbacks.onAddItemInCart}
-                onIncreaseCountAndPrice={callbacks.onIncreaseCountAndPrice}
-                />
-          <Modal open={() => setOpenCart(!openCart)}>
+          <PageLayout>
+            <Head title='Магазин'/>
+            <Controls cart={cart} openCart={() => setOpenCart(!openCart)}/>
+            <List list={list}
+                  onAddItemInCart={callbacks.onAddItemInCart}
+                  onIncreaseCountAndPrice={callbacks.onIncreaseCountAndPrice}
+                  />
+          </PageLayout>
+          <Modal title='Корзина' close={() => setOpenCart(!openCart)}>
             <Cart cart={cart}
-                  openCart={() => setOpenCart(!openCart)}
                   onDeleteItemInCart={callbacks.onDeleteItemInCart}
                   />
           </Modal>
         </>
       ):(
-        <>
+        <PageLayout>
           <Head title='Магазин'/>
           <Controls cart={cart} openCart={() => setOpenCart(!openCart)} />
           <List list={list}
                 onAddItemInCart={callbacks.onAddItemInCart}
                 onIncreaseCountAndPrice={callbacks.onIncreaseCountAndPrice}
                 />
-        </>
+        </PageLayout>
       )}
-    </PageLayout>
+    </>
   );
 }
 
