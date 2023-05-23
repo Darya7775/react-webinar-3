@@ -24,7 +24,7 @@ function Item(props) {
         {props.item.title}
       </div>
       <div className={cn('price')}>
-        {props.item.price} ₽
+        {props.item.price.toLocaleString('ru-RU')} ₽
       </div>
       <div className={cn('actions')}>
         <button className={cn('button')} type='button' onClick={() => props.item.isCart ? callbacks.onIncreaseCountAndPrice() : callbacks.onAddInCart()}>

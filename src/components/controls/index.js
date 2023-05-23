@@ -12,7 +12,7 @@ function Controls({ cart, openCart }) {
     <div className={cn()}>
       <div className={cn('wrapper')}> В корзине:
         {cart.ids.length ?
-          <span className={cn('text')}>{cart.ids.length ? `${cart.ids.length} ${plural(cart.ids.length, {one: 'товар', few: 'товара', many: 'товаров'})}` : ''}/{cart.totalPrice} ₽</span>
+          <span className={cn('text')}>{cart.ids.length ? `${cart.ids.length} ${plural(cart.ids.length, {one: 'товар', few: 'товара', many: 'товаров'})}` : ''}/{cart.totalPrice.toLocaleString('ru-RU')} ₽</span>
         :
           <span className={cn('text')}>пусто</span>
         }

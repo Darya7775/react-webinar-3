@@ -9,7 +9,7 @@ function Cart({ cart, onDeleteItemInCart }) {
       <List list={Object.values(cart.entities)} onDeleteItemInCart={onDeleteItemInCart} />
       <div className='Cart-price'>
         <span>Итого:</span>
-        <span>{cart.totalPrice} ₽</span>
+        <span>{cart.totalPrice.toLocaleString('ru-RU')} ₽</span>
       </div>
     </div>
   );

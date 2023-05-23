@@ -20,7 +20,7 @@ function ItemCart(props) {
         {props.item.title}
       </div>
       <div className={cn('price')}>
-        {props.item.price} ₽
+        {props.item.price.toLocaleString('ru-RU')} ₽
       </div>
       <div className={cn('count')}>{props.item.count} шт</div>
       <div className={cn('actions')}>
