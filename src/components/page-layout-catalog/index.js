@@ -1,12 +1,12 @@
-import {memo} from "react";
-import {Outlet} from "react-router-dom";
-import PropTypes from "prop-types";
+import {memo} from 'react';
+import {Outlet} from 'react-router-dom';
 import {cn as bem} from '@bem-react/classname';
+import Pagination from '../../components/pagination';
 import './style.css';
 
-function PageLayout({head, footer}) {
+function PageLayoutCatalog({head, footer}) {
 
-  const cn = bem('PageLayout');
+  const cn = bem('PageLayoutCatalog');
 
   return (
     <div className={cn()}>
@@ -15,6 +15,7 @@ function PageLayout({head, footer}) {
       </header>
       <main className={cn('center')}>
         <Outlet />
+        <Pagination/>
       </main>
       <footer className={cn('footer')}>
         {footer}
@@ -23,4 +24,4 @@ function PageLayout({head, footer}) {
   );
 }
 
-export default memo(PageLayout);
+export default memo(PageLayoutCatalog);

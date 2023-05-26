@@ -1,0 +1,24 @@
+.OneProduct {
+  display: grid;
+  justify-items: start;
+  gap: 20px;
+
+  padding: 40px;
+
+  font-size: 18px;
+  line-height: 21px;
+}
+
+.OneProduct-text {
+  margin: 0;
+}
+
+.OneProduct-price {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 28px;
+}
+
+.OneProduct-fat {
+  font-weight: 700;
+}

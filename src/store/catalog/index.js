@@ -14,12 +14,13 @@ class Catalog extends StoreModule {
     }
   }
 
-  async load() {
-    const response = await fetch('/api/v1/articles');
+  async load(number) {
+    const response = await fetch(`/api/v1/articles?limit=10&skip=${number}0&fields=items(_id, title, price),count`);
     const json = await response.json();
     this.setState({
        ...this.getState(),
-       list: json.result.items
+       list: json.result.items,
+       quentyPages: Math.ceil(json.result.count / 10),
     }, 'Загружены товары из АПИ');
   }
 }
