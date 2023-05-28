@@ -1,15 +1,15 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState, memo} from 'react';
 import {useParams} from 'react-router-dom';
-import {cn as bem} from '@bem-react/classname';
 import BasketTool from '../../components/basket-tool';
 import Head from '../../components/head';
+import CardProduct from '../../components/card-product';
 import useStore from '../../store/use-store';
 import useSelector from '../../store/use-selector';
-import './style.css';
 
 function OneProduct() {
   const [product, setProduct] = useState({});
   const store = useStore();
+
   const activeUrl = useParams();
 
   useEffect(() => {
@@ -19,7 +19,7 @@ function OneProduct() {
       setProduct(result.result);
     }
     loadingOneProduct()
-  }, []);
+  }, [activeUrl.id]);
 
   const made = {...product.madeIn};
   const category = {...product.category};
@@ -29,11 +29,9 @@ function OneProduct() {
     sum: state.basket.sum
   }));
 
-  const cn = bem('OneProduct');
-
   const callbacks = {
     // Добавление в корзину
-    addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
+    addToBasket: useCallback(product => store.actions.basket.addToBasketOneProduct(product), [store]),
     // Открытие модалки корзины
     openModalBasket: useCallback(() => store.actions.modals.open('basket'), [store]),
   }
@@ -46,16 +44,14 @@ function OneProduct() {
         amount={select.amount}
         sum={select.sum}
       />
-      <section className={cn()}>
-        <p className={cn('text')}>{product.description}</p>
-        <span>Страна производитель: <span className={cn('fat')}>{made.title} ({made.code})</span></span>
-        <span>Категория: <span className={cn('fat')}>{category.title}</span></span>
-        <span>Год выпуска: <span className={cn('fat')}>{product.edition}</span></span>
-        <span className={cn('price')}>Цена: {product.price} ₽</span>
-        <button className={cn('button')}  type='button' onClick={() => callbacks.addToBasket(product._id)}>Добавить</button>
-      </section>
+      <CardProduct
+        product={product}
+        made={made}
+        category={category}
+        addToBasket={callbacks.addToBasket}
+      />
     </>
   );
 }
 
-export default OneProduct;
+export default memo(OneProduct);

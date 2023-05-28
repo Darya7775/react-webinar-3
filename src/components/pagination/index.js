@@ -1,20 +1,18 @@
 import React from 'react';
-import useSelector from '../../store/use-selector';
-import {Link, useParams} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
 import './style.css';
 
-function Pagination() {
+function Pagination(props) {
   // получение массива страниц
-  const count = useSelector(state => state.catalog.quentyPages);
-  const numberPages = Array.from({length: count}, (_, index) => index + 1);
-
-  // получение номера текущей страницы
-  const activeUrl = useParams();
-  const urlPage = activeUrl.pageNumber.split('_');
-  const currentPage = Number(urlPage[urlPage.length - 1]);
+  const numberPages = Array.from({length: props.quentyPages}, (_, index) => index + 1);
 
   // массив страниц для рендера
-  const activePages = numberPages.slice().splice(currentPage - 2, 3);
+  const activePages = numberPages.slice().splice(props.currentPage - 2, 3);
+
+  const callbacks = {
+    onSavePage: () => props.saveCurrentPageNumbers()
+  }
 
   const renderList = (number) => {
     switch(number) {
@@ -22,10 +20,10 @@ function Pagination() {
         return(
           <>
             <li key='2'>
-              <Link to='page_2' className='Pagination-item'>2</Link>
+              <Link to='/page_2' className='Pagination-item'>2</Link>
             </li>
             <li key='3'>
-              <Link to='page_3' className='Pagination-item'>3</Link>
+              <Link to='/page_3' className='Pagination-item'>3</Link>
             </li>
             <li>...</li>
           </>
@@ -34,10 +32,10 @@ function Pagination() {
         return(
           <>
             <li key='2'>
-              <Link to='page_2' className='Pagination-item Pagination-item--active'>2</Link>
+              <Link to='/page_2' className='Pagination-item Pagination-item--active'>2</Link>
             </li>
             <li key='3'>
-              <Link to='page_3' className='Pagination-item'>3</Link>
+              <Link to='/page_3' className='Pagination-item'>3</Link>
             </li>
             <li>...</li>
           </>
@@ -46,13 +44,13 @@ function Pagination() {
           return(
             <>
               <li key='2'>
-                <Link to='page_2' className='Pagination-item'>2</Link>
+                <Link to='/page_2' className='Pagination-item'>2</Link>
               </li>
               <li key='3'>
-                <Link to='page_3' className='Pagination-item Pagination-item--active'>3</Link>
+                <Link to='/page_3' className='Pagination-item Pagination-item--active'>3</Link>
               </li>
               <li key='4'>
-                <Link to='page_4' className='Pagination-item'>4</Link>
+                <Link to='/page_4' className='Pagination-item'>4</Link>
               </li>
               <li>...</li>
             </>
@@ -62,10 +60,10 @@ function Pagination() {
           <>
             <li>...</li>
             <li key={numberPages[numberPages.length - 3]}>
-              <Link to={`page_${numberPages[numberPages.length - 3]}`} className='Pagination-item'>{numberPages[numberPages.length - 3]}</Link>
+              <Link to={`/page_${numberPages[numberPages.length - 3]}`} className='Pagination-item'>{numberPages[numberPages.length - 3]}</Link>
             </li>
             <li key={numberPages[numberPages.length - 2]}>
-              <Link to={`page_${numberPages[numberPages.length - 2]}`} className='Pagination-item'>{numberPages[numberPages.length - 2]}</Link>
+              <Link to={`/page_${numberPages[numberPages.length - 2]}`} className='Pagination-item'>{numberPages[numberPages.length - 2]}</Link>
             </li>
           </>
         );
@@ -74,10 +72,10 @@ function Pagination() {
           <>
             <li>...</li>
             <li key={numberPages[numberPages.length - 3]}>
-              <Link to={`page_${numberPages[numberPages.length - 3]}`} className='Pagination-item'>{numberPages[numberPages.length - 3]}</Link>
+              <Link to={`/page_${numberPages[numberPages.length - 3]}`} className='Pagination-item'>{numberPages[numberPages.length - 3]}</Link>
             </li>
             <li key={numberPages[numberPages.length - 2]}>
-              <Link to={`page_${numberPages[numberPages.length - 2]}`} className='Pagination-item Pagination-item--active'>{numberPages[numberPages.length - 2]}</Link>
+              <Link to={`/page_${numberPages[numberPages.length - 2]}`} className='Pagination-item Pagination-item--active'>{numberPages[numberPages.length - 2]}</Link>
             </li>
           </>
         );
@@ -86,13 +84,13 @@ function Pagination() {
           <>
             <li>...</li>
             <li key={numberPages[numberPages.length - 4]}>
-              <Link to={`page_${numberPages[numberPages.length - 4]}`} className='Pagination-item'>{numberPages[numberPages.length - 4]}</Link>
+              <Link to={`/page_${numberPages[numberPages.length - 4]}`} className='Pagination-item'>{numberPages[numberPages.length - 4]}</Link>
             </li>
             <li key={numberPages[numberPages.length - 3]}>
-              <Link to={`page_${numberPages[numberPages.length - 3]}`} className='Pagination-item Pagination-item--active'>{numberPages[numberPages.length - 3]}</Link>
+              <Link to={`/page_${numberPages[numberPages.length - 3]}`} className='Pagination-item Pagination-item--active'>{numberPages[numberPages.length - 3]}</Link>
             </li>
             <li key={numberPages[numberPages.length - 2]}>
-              <Link to={`page_${numberPages[numberPages.length - 2]}`} className='Pagination-item'>{numberPages[numberPages.length - 2]}</Link>
+              <Link to={`/page_${numberPages[numberPages.length - 2]}`} className='Pagination-item'>{numberPages[numberPages.length - 2]}</Link>
             </li>
           </>
         );
@@ -103,7 +101,10 @@ function Pagination() {
           <li>...</li>
           {activePages.map(number => (
             <li key={number}>
-              <Link to={`page_${number}`} className={currentPage === number ? 'Pagination-item Pagination-item--active' : 'Pagination-item'}>{number}</Link>
+              <Link
+                to={`/page_${number}`}
+                onClick={callbacks.onSavePage}
+                className={props.currentPage === number ? 'Pagination-item Pagination-item--active' : 'Pagination-item'}>{number}</Link>
             </li>
           ))}
           <li>...</li>
@@ -115,14 +116,24 @@ function Pagination() {
   return(
     <ul className='Pagination'>
       <li key='1'>
-        <Link to='page_1' className={currentPage === 1 ? 'Pagination-item Pagination-item--active' : 'Pagination-item'}>1</Link>
+        <Link onClick={callbacks.onSavePage} to='/page_1' className={props.currentPage === 1 ? 'Pagination-item Pagination-item--active' : 'Pagination-item'}>1</Link>
       </li>
-      {renderList(currentPage)}
+      {renderList(props.currentPage)}
       <li key={numberPages[numberPages.length - 1]}>
-        <Link to={`page_${numberPages[numberPages.length - 1]}`} className={currentPage === numberPages[numberPages.length - 1] ? 'Pagination-item Pagination-item--active' : 'Pagination-item'}>{numberPages[numberPages.length - 1]}</Link>
+        <Link onClick={callbacks.onSavePage} to={`/page_${numberPages[numberPages.length - 1]}`} className={props.currentPage === numberPages[numberPages.length - 1] ? 'Pagination-item Pagination-item--active' : 'Pagination-item'}>{numberPages[numberPages.length - 1]}</Link>
       </li>
     </ul>
   );
+}
+
+Pagination.propTypes = {
+  currentPage: PropTypes.number,
+  quentyPages: PropTypes.number,
+  onSavePage: PropTypes.func,
+};
+
+Pagination.defaultProps = {
+  onSavePage: () => {},
 }
 
 export default Pagination;

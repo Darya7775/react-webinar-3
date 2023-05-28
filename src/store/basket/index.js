@@ -46,6 +46,38 @@ class Basket extends StoreModule {
   }
 
   /**
+   * Добавление товара в корзину из OneProduct
+   * @param product объект продукта
+   */
+  addToBasketOneProduct(product) {
+    let sum = 0;
+    let exist = false;
+    const list = this.getState().list.map(item => {
+      let result = item;
+      if (item._id === product._id) {
+        exist = true; // Запомним, что был найден в корзине
+        result = {...item, amount: item.amount + 1};
+      }
+      sum += result.price * result.amount;
+      return result;
+    });
+
+    if (!exist) {
+      // Добавляем в корзину
+      list.push({...product, amount: 1}); // list уже новый, в него можно пушить.
+      // Добавляем к сумме.
+      sum += product.price;
+    }
+
+    this.setState({
+      ...this.getState(),
+      list,
+      sum,
+      amount: list.length
+    }, 'Добавление в корзину');
+  }
+
+  /**
    * Удаление товара из корзины
    * @param _id Код товара
    */

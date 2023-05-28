@@ -1,7 +1,6 @@
 import {useCallback, useContext, useEffect, useState} from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 import PageLayout from '../components/page-layout';
-import PageLayoutCatalog from '../components/page-layout-catalog';
 import Main from "./main";
 import Basket from "./basket";
 import OneProduct from './one-product';
@@ -21,23 +20,28 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<PageLayoutCatalog />}>
+
+        <Route element={<PageLayout />}>
+
           <Route path=":pageNumber" element={
             <>
               <Main />
               {activeModal === 'basket' && <Basket />}
             </>}
           />
+
+          <Route path="/articles/:id" element={
+            <>
+              <OneProduct />
+              {activeModal === 'basket' && <Basket />}
+            </>}
+          />
+
         </Route>
+
+       { /* перенаправление со страницы "/" на "/page_1" */}
         <Route path="/" element={<Navigate replace to="/page_1" />} />
-        <Route element={<PageLayout />}>
-          <Route path=":pageNumber/:id" element={
-              <>
-                <OneProduct />
-                {activeModal === 'basket' && <Basket />}
-              </>}
-            />
-        </Route>
+
       </Routes>
     </BrowserRouter>
   );

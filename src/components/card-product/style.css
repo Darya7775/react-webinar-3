@@ -1,4 +1,4 @@
-.OneProduct {
+.CardProduct {
   display: grid;
   justify-items: start;
   gap: 20px;
@@ -9,16 +9,16 @@
   line-height: 21px;
 }
 
-.OneProduct-text {
+.CardProduct-text {
   margin: 0;
 }
 
-.OneProduct-price {
+.CardProduct-price {
   font-weight: 700;
   font-size: 24px;
   line-height: 28px;
 }
 
-.OneProduct-fat {
+.CardProduct-fat {
   font-weight: 700;
 }
