@@ -10,10 +10,6 @@ function Pagination(props) {
   // массив страниц для рендера
   const activePages = numberPages.slice().splice(props.currentPage - 2, 3);
 
-  const callbacks = {
-    onSavePage: () => props.saveCurrentPageNumbers()
-  }
-
   const renderList = (number) => {
     switch(number) {
       case 1:
@@ -101,10 +97,7 @@ function Pagination(props) {
           <li>...</li>
           {activePages.map(number => (
             <li key={number}>
-              <Link
-                to={`/page_${number}`}
-                onClick={callbacks.onSavePage}
-                className={props.currentPage === number ? 'Pagination-item Pagination-item--active' : 'Pagination-item'}>{number}</Link>
+              <Link to={`/page_${number}`} className={props.currentPage === number ? 'Pagination-item Pagination-item--active' : 'Pagination-item'}>{number}</Link>
             </li>
           ))}
           <li>...</li>
@@ -116,11 +109,11 @@ function Pagination(props) {
   return(
     <ul className='Pagination'>
       <li key='1'>
-        <Link onClick={callbacks.onSavePage} to='/page_1' className={props.currentPage === 1 ? 'Pagination-item Pagination-item--active' : 'Pagination-item'}>1</Link>
+        <Link to='/page_1' className={props.currentPage === 1 ? 'Pagination-item Pagination-item--active' : 'Pagination-item'}>1</Link>
       </li>
       {renderList(props.currentPage)}
       <li key={numberPages[numberPages.length - 1]}>
-        <Link onClick={callbacks.onSavePage} to={`/page_${numberPages[numberPages.length - 1]}`} className={props.currentPage === numberPages[numberPages.length - 1] ? 'Pagination-item Pagination-item--active' : 'Pagination-item'}>{numberPages[numberPages.length - 1]}</Link>
+        <Link to={`/page_${numberPages[numberPages.length - 1]}`} className={props.currentPage === numberPages[numberPages.length - 1] ? 'Pagination-item Pagination-item--active' : 'Pagination-item'}>{numberPages[numberPages.length - 1]}</Link>
       </li>
     </ul>
   );
@@ -129,11 +122,6 @@ function Pagination(props) {
 Pagination.propTypes = {
   currentPage: PropTypes.number,
   quentyPages: PropTypes.number,
-  onSavePage: PropTypes.func,
 };
-
-Pagination.defaultProps = {
-  onSavePage: () => {},
-}
 
 export default Pagination;

@@ -5,21 +5,22 @@ import Head from '../../components/head';
 import CardProduct from '../../components/card-product';
 import useStore from '../../store/use-store';
 import useSelector from '../../store/use-selector';
+import Navigation from '../../components/navigation';
+import Wrapper from '../../components/wrapper';
 
 function OneProduct() {
-  const [product, setProduct] = useState({});
+
   const store = useStore();
 
   const activeUrl = useParams();
 
   useEffect(() => {
-    async function loadingOneProduct() {
-      const response = await fetch(`/api/v1/articles/${activeUrl.id}?fields=*,madeIn(title,code),category(title)`);
-      const result = await response.json();
-      setProduct(result.result);
-    }
-    loadingOneProduct()
+    store.actions.oneProduct.load(activeUrl.id);
   }, [activeUrl.id]);
+
+  const product = useSelector(state => ({
+    ...state.oneProduct.product
+  }));
 
   const made = {...product.madeIn};
   const category = {...product.category};
@@ -39,11 +40,14 @@ function OneProduct() {
   return(
     <>
       <Head title={product.title}/>
-      <BasketTool
-        onOpen={callbacks.openModalBasket}
-        amount={select.amount}
-        sum={select.sum}
-      />
+      <Wrapper>
+        <Navigation />
+        <BasketTool
+          onOpen={callbacks.openModalBasket}
+          amount={select.amount}
+          sum={select.sum}
+        />
+      </Wrapper>
       <CardProduct
         product={product}
         made={made}

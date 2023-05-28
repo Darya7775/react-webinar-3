@@ -7,6 +7,8 @@ import List from '../../components/list';
 import useStore from '../../store/use-store';
 import useSelector from '../../store/use-selector';
 import Pagination from '../../components/pagination';
+import Navigation from '../../components/navigation';
+import Wrapper from '../../components/wrapper';
 
 function Main() {
 
@@ -18,8 +20,7 @@ function Main() {
   const currentPage = Number(urlPage[urlPage.length - 1]);
 
   useEffect(() => {
-    store.actions.catalog.load(currentPage - 1);
-    store.actions.numberPage.saveCurrentPageNumbers(currentPage);
+    store.actions.catalog.load(currentPage - 1, currentPage);
   }, [currentPage]);
 
   const select = useSelector(state => ({
@@ -29,15 +30,13 @@ function Main() {
   }));
 
   const quentyPages = useSelector(state => state.catalog.quentyPages);
-  const numberCurrentPage = useSelector(state => state.numberPage);
+  const numberCurrentPage = useSelector(state => state.catalog.numberPage);
 
   const callbacks = {
     // Добавление в корзину
     addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
     // Открытие модалки корзины
     openModalBasket: useCallback(() => store.actions.modals.open('basket'), [store]),
-    // Сохранение номера текущей страницы
-    saveCurrentPageNumbers: useCallback((currentPage) => store.actions.numberPage.saveCurrentPageNumbers(currentPage), [store]),
   }
 
   const urlItem = `/articles/`;
@@ -51,14 +50,13 @@ function Main() {
   return (
     <>
       <Head title='Магазин'/>
-      <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount}
+      <Wrapper>
+        <Navigation />
+        <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount}
                   sum={select.sum}/>
+      </Wrapper>
       <List list={select.list} renderItem={renders.item}/>
-      <Pagination
-        saveCurrentPageNumbers={callbacks.saveCurrentPageNumbers}
-        quentyPages={quentyPages}
-        currentPage={numberCurrentPage}
-      />
+      <Pagination quentyPages={quentyPages} currentPage={numberCurrentPage} />
     </>
   );
 }

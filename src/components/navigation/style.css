@@ -1,9 +1,10 @@
 .Navigation {
   margin: 0;
-  padding: 0;
+  padding: 20px;
   list-style: none;
 }
 
 .Navigation-link {
+  font-size: 18px;
   color: #0087e9;
 }
