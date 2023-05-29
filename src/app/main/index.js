@@ -9,6 +9,7 @@ import useSelector from '../../store/use-selector';
 import Pagination from '../../components/pagination';
 import Navigation from '../../components/navigation';
 import Wrapper from '../../components/wrapper';
+import Spinner from '../../components/spinner';
 
 function Main() {
 
@@ -22,6 +23,8 @@ function Main() {
   useEffect(() => {
     store.actions.catalog.load(currentPage - 1, currentPage);
   }, [currentPage]);
+
+  const status = useSelector(state => state.catalog.status);
 
   const select = useSelector(state => ({
     list: state.catalog.list,
@@ -47,6 +50,16 @@ function Main() {
     }, [callbacks.addToBasket]),
   };
 
+  let content;
+  if(status === 'loading') {
+    content = <Spinner text='Loading'/>;
+  } else {
+    content = <>
+                <List list={select.list} renderItem={renders.item}/>
+                <Pagination quentyPages={quentyPages} currentPage={numberCurrentPage} />
+              </>
+  }
+
   return (
     <>
       <Head title='Магазин'/>
@@ -55,8 +68,7 @@ function Main() {
         <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount}
                   sum={select.sum}/>
       </Wrapper>
-      <List list={select.list} renderItem={renders.item}/>
-      <Pagination quentyPages={quentyPages} currentPage={numberCurrentPage} />
+      {content}
     </>
   );
 }
