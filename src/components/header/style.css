@@ -1,0 +1,22 @@
+.Header {
+  display: flex;
+  justify-content: end;
+
+  padding: 10px 20px;
+}
+
+.Header-wrapper {
+  display: flex;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.Header-button-entrance {
+  background: #EFEFEF;
+  border: 1px solid #767676;
+  border-radius: 5px;
+  padding: 5px 10px;
+  text-decoration: none;
+  color: #000000;
+}
