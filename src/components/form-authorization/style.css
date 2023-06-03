@@ -1,0 +1,29 @@
+.Form {
+  padding: 40px 20px 20px;
+  display: grid;
+  gap: 15px;
+}
+
+.Form-title {
+  margin: 0;
+}
+
+.Form-wrapper {
+  max-width: 200px;
+  display: grid;
+  justify-items: start;
+  gap: 2px;
+}
+
+.Form-wrapper input {
+  padding: 3px;
+  width: 100%;
+}
+
+.Form-error {
+  color:#a52a2a;
+}
+
+.Form-button {
+  justify-self: start;
+}

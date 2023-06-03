@@ -26,17 +26,16 @@ function Main() {
 
   const authorization = useSelector(state => state.user.authorization);
   const userName = useSelector(state => ({...state.user.user.profile}));
-  console.log(userName.name)
 
   const {t} = useTranslate();
 
   const callbacks = {
     // Выход из профиля
-    exit: useCallback(() => {store.actions.user.exit(), [store]; localStorage.clear()}),
+    exit: useCallback((token) => {store.actions.user.exit(token); localStorage.clear()}, [store]),
   }
 
   return (
-    <PageLayout head={<Header isAuthorization={authorization} text={userName.name} onExit={callbacks.exit} />}>
+    <PageLayout head={<Header isAuthorization={authorization} text={userName.name} onExit={callbacks.exit} token={token} />}>
       <Head title={t('title')}>
         <LocaleSelect/>
       </Head>

@@ -41,11 +41,11 @@ function Article() {
     // Добавление в корзину
     addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
     // Выход из профиля
-    exit: useCallback(() => {store.actions.user.exit(), [store]; localStorage.clear()}),
+    exit: useCallback((token) => {store.actions.user.exit(token); localStorage.clear()}, [store]),
   }
 
   return (
-    <PageLayout head={<Header isAuthorization={authorization} text={userName.name} onExit={callbacks.exit} />}>
+    <PageLayout head={<Header isAuthorization={authorization} text={userName.name} onExit={callbacks.exit} token={token} />}>
       <Head title={select.article.title}>
         <LocaleSelect/>
       </Head>

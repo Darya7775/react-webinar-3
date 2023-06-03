@@ -8,6 +8,7 @@ import Header from "../../components/header";
 import LocaleSelect from "../../containers/locale-select";
 import Navigation from "../../containers/navigation";
 import Head from "../../components/head";
+import FormAuthorization from "../../components/form-authorization";
 
 
 function Login() {
@@ -51,18 +52,15 @@ function Login() {
         <LocaleSelect/>
       </Head>
       <Navigation/>
-      <form action="/api/v1/users/sign" method="post" onSubmit={onSubmitForm}>
-        <div>
-          <label htmlFor="login">Логин</label>
-          <input type="text" id="login" value={login} onChange={onLoginChange} name="login" required></input>
-        </div>
-        <div>
-          <label htmlFor="password">Пароль</label>
-          <input type="password" id="password" value={password} onChange={onPasswordChange} name="password" required></input>
-        </div>
-        {authorization || <div>{error}</div>}
-        <button type="submit">Войти</button>
-      </form>
+      <FormAuthorization
+        login={login}
+        password={password}
+        onLoginChange={onLoginChange}
+        onPasswordChange={onPasswordChange}
+        onSubmitForm={onSubmitForm}
+        authorization={authorization}
+        error={error}
+        />
     </PageLayout>
   );
 }

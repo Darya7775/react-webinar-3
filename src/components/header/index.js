@@ -13,7 +13,7 @@ function Header(props) {
       {props.isAuthorization ?
       <div className={cn('wrapper')}>
         <Link className={cn('link')} to="/profile">{props.text}</Link>
-        <button className={cn('button')} type='button' onClick={props.onExit}>Выход</button>
+        <button className={cn('button')} type='button' onClick={() => props.onExit(props.token)}>Выход</button>
       </div>
       : <Link className={cn('button-entrance')} to="/login">Вход</Link>}
     </header>
@@ -24,6 +24,7 @@ Header.propTypes = {
   isAuthorization: PropTypes.bool,
   onExit: PropTypes.func,
   text: PropTypes.string,
+  token: PropTypes.string,
 };
 
 Header.defaultProps = {

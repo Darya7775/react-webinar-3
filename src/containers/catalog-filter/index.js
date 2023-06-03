@@ -18,11 +18,14 @@ function CatalogFilter() {
   const select = useSelector(state => ({
     sort: state.catalog.params.sort,
     query: state.catalog.params.query,
+    category: state.catalog.params.category,
   }));
 
   const callbacks = {
     // Сортировка
     onSort: useCallback(sort => store.actions.catalog.setParams({sort}), [store]),
+    // Сортировка по категории
+    onSortCategory: useCallback(category => store.actions.catalog.setParams({category, page: 1}), [store]),
     // Поиск
     onSearch: useCallback(query => store.actions.catalog.setParams({query, page: 1}), [store]),
     // Сброс
@@ -40,18 +43,11 @@ function CatalogFilter() {
 
   const categories = useSelector(state => state.categories);
 
-  const optionsCategories = {
-    sort: useMemo(() => ([
-      {value: 'fields', title: 'Все'},
-      // ...arr
-    ]), [])
-  };
-
   const {t} = useTranslate();
 
   return (
     <SideLayout padding='medium'>
-      <Select options={optionsCategories.sort}/>
+      <Select options={categories.categories} value={select.category} onChange={callbacks.onSortCategory}/>
       <Select options={options.sort} value={select.sort} onChange={callbacks.onSort}/>
       <Input value={select.query} onChange={callbacks.onSearch} placeholder={'Поиск'}
              delay={1000}/>

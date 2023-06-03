@@ -17,29 +17,29 @@ function Profile() {
   const {t} = useTranslate();
 
   const token = JSON.parse(localStorage.getItem('token'));
-  const authorization = useSelector(state => state.user.authorization);
 
   useInit(() => {
-    if(authorization) {
+    if(token) {
       store.actions.user.load(token);
     }
   }, [token]);
 
+  const authorization = useSelector(state => state.user.authorization);
   const user = useSelector(state => ({...state.user.user}));
   const profile = {...user.profile};
 
   const callbacks = {
     // Выход из профиля
-    exit: useCallback(() => {store.actions.user.exit(), [store]; localStorage.clear()}),
+    exit: useCallback((token) => {store.actions.user.exit(token); localStorage.clear()}, [store]),
   }
 
   // перенаправление на страницу авторизации
-  if(!authorization) {
-    return(<Navigate replace to="/login" />);
+  if(!token) {
+    return(<Navigate replace to="/login"/>);
   }
 
   return(
-    <PageLayout head={<Header isAuthorization={authorization} text={profile.name} onExit={callbacks.exit}/>}>
+    <PageLayout head={<Header isAuthorization={authorization} text={profile.name} onExit={callbacks.exit} token={token}/>}>
       <Head title={t('title')}>
         <LocaleSelect/>
       </Head>

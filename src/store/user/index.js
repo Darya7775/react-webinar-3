@@ -92,14 +92,43 @@ class User extends StoreModule {
     }
   }
 
-  exit() {
-    this.setState({
-      user: {},
-      authorization: false,
-      userName: '',
-      token: '',
-      error: ''
-    }, 'Пользователь вышел');
+  /**
+   Удаление данных о пользователе
+   * @param token {String} токен пользователя
+  */
+
+  async exit(token) {
+
+    let result;
+
+    try {
+      const response = await fetch('/api/v1/users/self', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Token': token
+        }
+      })
+      result = await response.json();
+
+      // Пользователь удален
+      this.setState({
+        ...this.getState(),
+        user: {},
+        userName: '',
+        token: '',
+        error: '',
+        authorization: !result,
+      }, 'Пользователь вышел');
+
+    } catch (e) {
+      // Ошибка удаления
+      console.log(result)
+      this.setState({
+        ...this.getState(),
+        error: result.error.message
+      }, 'Пользователь не вышел');
+    }
   }
 }
 
