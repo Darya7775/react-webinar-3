@@ -13,9 +13,9 @@ function Header(props) {
       {props.isAuthorization ?
       <div className={cn('wrapper')}>
         <Link className={cn('link')} to="/profile">{props.text}</Link>
-        <button className={cn('button')} type='button' onClick={() => props.onExit(props.token)}>Выход</button>
+        <button className={cn('button')} type='button' onClick={() => props.onExit(props.token)}>{props.labelExit}</button>
       </div>
-      : <Link className={cn('button-entrance')} to="/login">Вход</Link>}
+      : <Link className={cn('button-entrance')} to="/login">{props.labelEntry}</Link>}
     </header>
   );
 }
@@ -25,10 +25,14 @@ Header.propTypes = {
   onExit: PropTypes.func,
   text: PropTypes.string,
   token: PropTypes.string,
+  labelExit: PropTypes.string,
+  labelEntry: PropTypes.string,
 };
 
 Header.defaultProps = {
   onExit: () => {},
+  labelExit: 'Выход',
+  labelEntry: 'Вход'
 }
 
 export default memo(Header);

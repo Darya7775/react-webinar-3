@@ -45,7 +45,9 @@ function Article() {
   }
 
   return (
-    <PageLayout head={<Header isAuthorization={authorization} text={userName.name} onExit={callbacks.exit} token={token} />}>
+    <PageLayout head={<Header isAuthorization={authorization} text={userName.name}
+                              onExit={callbacks.exit} token={token}
+                              labelEntry={t('header.entry')} labelExit={t('header.exit')} />}>
       <Head title={select.article.title}>
         <LocaleSelect/>
       </Head>

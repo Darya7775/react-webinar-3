@@ -1,15 +1,15 @@
-import React, {useCallback} from "react";
-import {Navigate} from "react-router-dom";
-import useStore from "../../hooks/use-store";
-import useInit from "../../hooks/use-init";
-import useSelector from "../../hooks/use-selector";
-import useTranslate from "../../hooks/use-translate";
-import PageLayout from "../../components/page-layout";
-import Header from "../../components/header";
-import LocaleSelect from "../../containers/locale-select";
-import Navigation from "../../containers/navigation";
-import Head from "../../components/head";
-import ProfileCard from "../../components/profile-card";
+import React, {useCallback} from 'react';
+import {Navigate} from 'react-router-dom';
+import useStore from '../../hooks/use-store';
+import useInit from '../../hooks/use-init';
+import useSelector from '../../hooks/use-selector';
+import useTranslate from '../../hooks/use-translate';
+import PageLayout from '../../components/page-layout';
+import Header from '../../components/header';
+import LocaleSelect from '../../containers/locale-select';
+import Navigation from '../../containers/navigation';
+import Head from '../../components/head';
+import ProfileCard from '../../components/profile-card';
 
 function Profile() {
 
@@ -35,16 +35,19 @@ function Profile() {
 
   // перенаправление на страницу авторизации
   if(!token) {
-    return(<Navigate replace to="/login"/>);
+    return(<Navigate replace to='/login'/>);
   }
 
   return(
-    <PageLayout head={<Header isAuthorization={authorization} text={profile.name} onExit={callbacks.exit} token={token}/>}>
+    <PageLayout head={<Header isAuthorization={authorization} text={profile.name}
+                              onExit={callbacks.exit} token={token}
+                              labelEntry={t('header.entry')} labelExit={t('header.exit')}/>}>
       <Head title={t('title')}>
         <LocaleSelect/>
       </Head>
       <Navigation/>
-      <ProfileCard user={user} profile={profile}/>
+      <ProfileCard  user={user} profile={profile} labelName={t('profile.name')}
+                    labelTelephone={t('profile.telephone')} labelProfile={t('profile')}/>
     </PageLayout>
   );
 }
