@@ -33,7 +33,7 @@ function Article() {
   }));
 
   const authorization = useSelector(state => state.user.authorization);
-  const userName = useSelector(state => ({...state.user.user.profile}));
+  const userName = JSON.parse(sessionStorage.getItem('item'));
 
   const {t} = useTranslate();
 
@@ -41,7 +41,7 @@ function Article() {
     // Добавление в корзину
     addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
     // Выход из профиля
-    exit: useCallback((token) => {store.actions.user.exit(token); localStorage.clear()}, [store]),
+    exit: useCallback((token) => {store.actions.user.exit(token); localStorage.clear(); sessionStorage.clear();}, [store]),
   }
 
   return (

@@ -1,5 +1,4 @@
 import React, {useCallback} from 'react';
-import {Navigate} from 'react-router-dom';
 import useStore from '../../hooks/use-store';
 import useInit from '../../hooks/use-init';
 import useSelector from '../../hooks/use-selector';
@@ -28,9 +27,13 @@ function Profile() {
   const user = useSelector(state => ({...state.user.user}));
   const profile = {...user.profile};
 
+  if(authorization) {
+    sessionStorage.setItem('item', JSON.stringify({name: profile.name}))
+  }
+
   const callbacks = {
     // Выход из профиля
-    exit: useCallback((token) => {store.actions.user.exit(token); localStorage.clear()}, [store]),
+    exit: useCallback((token) => {store.actions.user.exit(token); localStorage.clear(); sessionStorage.clear();}, [store]),
   }
 
   return(

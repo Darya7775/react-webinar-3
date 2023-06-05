@@ -21,7 +21,8 @@ function Login() {
 
   let user = {
     'login': login,
-    'password': password
+    'password': password,
+    'remember': true
   };
 
   const {t} = useTranslate();
@@ -35,7 +36,7 @@ function Login() {
   const token = useSelector(state => state.user.token);
   const error = useSelector(state => state.user.error);
 
-  if(!localStorage.length  && authorization) {
+  if(!localStorage.length && authorization) {
     localStorage.clear();
     localStorage.setItem('token', JSON.stringify(token));
   }
