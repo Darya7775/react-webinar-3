@@ -35,10 +35,12 @@ function Login() {
   const token = useSelector(state => state.user.token);
   const error = useSelector(state => state.user.error);
 
-  if(authorization) {
+  if(!localStorage.length  && authorization) {
     localStorage.clear();
     localStorage.setItem('token', JSON.stringify(token));
+  }
 
+  if(authorization) {
     // перенаправление на страницу пользователя
     return(<Navigate replace to='/profile' />);
   }
