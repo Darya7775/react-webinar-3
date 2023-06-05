@@ -14,6 +14,7 @@ import FormAuthorization from '../../components/form-authorization';
 function Login() {
 
   const store = useStore();
+  console.log("login")
 
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');

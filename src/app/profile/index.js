@@ -20,7 +20,7 @@ function Profile() {
 
   useInit(() => {
     if(token) {
-      store.actions.user.load(token);
+      store.actions.user.loading(token);
     }
   }, [token]);
 
@@ -31,11 +31,6 @@ function Profile() {
   const callbacks = {
     // Выход из профиля
     exit: useCallback((token) => {store.actions.user.exit(token); localStorage.clear()}, [store]),
-  }
-
-  // перенаправление на страницу авторизации
-  if(!token) {
-    return(<Navigate replace to='/login'/>);
   }
 
   return(

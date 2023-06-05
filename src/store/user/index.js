@@ -46,9 +46,38 @@ class User extends StoreModule {
       // Ошибка авторизации
       this.setState({
         ...this.getState(),
-        error: result.error.message
+        error: result.error.data.issues[0].message
       }, 'Пользователь не авторизован');
     }
+  }
+
+  async check(token) {
+    let result;
+
+      const response = await fetch('/api/v1/users/self', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Token': token
+        }
+      })
+      result = await response.json();
+      console.log(result)
+
+      if(response.status === 200) {
+        // Пользователь авторизован
+        this.setState({
+          ...this.getState(),
+          authorization: true,
+        }, 'Пользователь проверен');
+      } else {
+        // Ошибка авторизации
+        this.setState({
+          ...this.getState(),
+          authorization: false,
+          error: result.error.data.issues[0].message
+        }, 'Пользователь не проверен');
+      }
   }
 
   /**
@@ -56,7 +85,7 @@ class User extends StoreModule {
    * @param token {String} токен пользователя
   */
 
-  async load(token) {
+  async loading(token) {
 
     let result;
 
@@ -80,14 +109,14 @@ class User extends StoreModule {
       this.setState({
         ...this.getState(),
         user: {...result.result},
+        authorization: true,
       }, 'Загружены данные пользователя');
-
     } catch (e) {
       // Ошибка загрузки
-      console.log(result)
       this.setState({
         ...this.getState(),
-        error: result.error.message
+        authorization: false,
+        error: result.error.data.issues[0].message,
       }, 'Данные пользователя не загружены');
     }
   }

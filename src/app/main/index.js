@@ -20,7 +20,7 @@ function Main() {
   useInit(() => {
     store.actions.catalog.initParams();
     if(token) {
-      store.actions.user.load(token);
+      store.actions.user.loading(token);
     }
   }, [token], true);
 

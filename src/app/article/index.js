@@ -23,7 +23,7 @@ function Article() {
   useInit(() => {
     store.actions.article.load(params.id);
     if(token) {
-      store.actions.user.load(token);
+      store.actions.user.loading(token);
     }
   }, [params.id, token]);
 

@@ -24,32 +24,29 @@ class Categories extends StoreModule {
     categoryObjects.push({value: '', title: 'Все'});
 
     result.result.items.map((item) => {
-      if(item.parent){
-        // поиск родителя
-        let parent = idParents[item.parent._id];
-        // если у родителя есть родитель
-        if(parent.parent) {
-          //находим индекс родителя
-          const indexPar = categoryRows.indexOf(`-${parent.name}`);
-          //добавляем под родителя
-          categoryRows.splice(indexPar + 2, 0, `--${item.title}`);
-          categoryObjects.splice(indexPar + 2, 0, {value: item._id, title: `--${item.title}`});
-        } else {
-          // если 1 родитель добавляем в конец
-          idParents[item._id] = {"parent": parent, "name": item.title};
-          categoryRows.push(`-${item.title}`);
-          categoryObjects.push({value: item._id, title: `-${item.title}`});
-        }
-      } else {
-        // если нет родителя добавляем в конец
-        idParents[item._id] = item.title;
+      if(item.parent === null) {
+        idParents[item._id] = {name: item.title, countDash: ''};
         categoryRows.push(item.title);
-        categoryObjects.push({value: item._id, title: item.title});
+        return(categoryObjects.push({value: item._id, title: item.title}));
       }
-    });
+
+      // находим родителя и добавляем под родителя
+      let parent = idParents[item.parent._id];
+      idParents[item._id] = {name: item.title, countDash: `${parent.countDash} - `};
+
+      if(idParents[item._id].countDash === ' - ') {
+        //если один родитель
+        categoryRows.push(`${parent.countDash} - ${item.title}`);
+        return(categoryObjects.push({value: item._id, title: `${parent.countDash} - ${item.title}`}));
+      }
+        // находим index родителя и добавляем под родителя
+        const indexPar = categoryRows.indexOf(`${parent.countDash}${parent.name}`);
+        categoryRows.splice(indexPar + 1, 0, `${parent.countDash} - ${item.title}`);
+        categoryObjects.splice(indexPar + 2, 0, {value: item._id, title: `${parent.countDash} - ${item.title}`});
+      })
 
     // сложность получается O(m * n) - где n - количество элементов в массиве,
-    // m - количество элементов, у которых 2 родителя. + память.
+    // m - количество элементов, у которых 2 и более родителя (O(3N)). + память.
 
     this.setState({
       ...this.getState(),
