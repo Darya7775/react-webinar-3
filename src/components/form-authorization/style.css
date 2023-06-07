@@ -9,14 +9,29 @@
 }
 
 .Form-wrapper {
-  max-width: 200px;
+  max-width: 193px;
   display: grid;
-  justify-items: start;
   gap: 2px;
 }
 
-.Form-wrapper input {
+.Form-wrapper_side_start {
+  justify-items: start;
+}
+
+.Form-wrapper_side_end {
+  justify-items: end;
+}
+
+.Form-wrapper_padding_small input {
   padding: 3px;
+}
+
+.Form-wrapper_padding_medium input {
+  padding: 10px;
+  font-size: 20px;
+}
+
+.Form-wrapper input {
   width: 100%;
 }
 

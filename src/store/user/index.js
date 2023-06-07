@@ -8,76 +8,8 @@ class User extends StoreModule {
   initState() {
     return {
       user: {},
-      userName: '',
-      authorization: false,
-      token: '',
       error: ''
     }
-  }
-
-  /**
-   авторизация пользователя
-   * @param [user] {Object} данные пользователя
-  */
-
-  async authorization(user) {
-
-    let result;
-
-    try {
-      const response = await fetch('/api/v1/users/sign', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user),
-      })
-      result = await response.json();
-
-      // Пользователь авторизован
-      this.setState({
-        ...this.getState(),
-        token: result.result.token,
-        userName: result.result.user.username,
-        authorization: true,
-      }, 'Пользователь авторизован');
-
-    } catch (e) {
-      // Ошибка авторизации
-      this.setState({
-        ...this.getState(),
-        error: result.error.data.issues[0].message
-      }, 'Пользователь не авторизован');
-    }
-  }
-
-  async check(token) {
-    let result;
-
-      const response = await fetch('/api/v1/users/self', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Token': token
-        }
-      })
-      result = await response.json();
-      console.log(result)
-
-      if(response.status === 200) {
-        // Пользователь авторизован
-        this.setState({
-          ...this.getState(),
-          authorization: true,
-        }, 'Пользователь проверен');
-      } else {
-        // Ошибка авторизации
-        this.setState({
-          ...this.getState(),
-          authorization: false,
-          error: result.error.data.issues[0].message
-        }, 'Пользователь не проверен');
-      }
   }
 
   /**
@@ -109,54 +41,13 @@ class User extends StoreModule {
       this.setState({
         ...this.getState(),
         user: {...result.result},
-        authorization: true,
       }, 'Загружены данные пользователя');
     } catch (e) {
       // Ошибка загрузки
       this.setState({
         ...this.getState(),
-        authorization: false,
         error: result.error.data.issues[0].message,
       }, 'Данные пользователя не загружены');
-    }
-  }
-
-  /**
-   Удаление данных о пользователе
-   * @param token {String} токен пользователя
-  */
-
-  async exit(token) {
-
-    let result;
-
-    try {
-      const response = await fetch('/api/v1/users/self', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Token': token
-        }
-      })
-      result = await response.json();
-
-      // Пользователь удален
-      this.setState({
-        ...this.getState(),
-        user: {},
-        userName: '',
-        token: '',
-        error: '',
-        authorization: !result,
-      }, 'Пользователь вышел');
-
-    } catch (e) {
-      // Ошибка удаления
-      console.log(result)
-      this.setState({
-        ...this.getState(),
-        error: result.error.message
-      }, 'Пользователь не вышел');
     }
   }
 }

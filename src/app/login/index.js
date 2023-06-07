@@ -14,7 +14,6 @@ import FormAuthorization from '../../components/form-authorization';
 function Login() {
 
   const store = useStore();
-  console.log("login")
 
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
@@ -29,16 +28,16 @@ function Login() {
 
   async function onSubmitForm(evt) {
     evt.preventDefault();
-    await store.actions.user.authorization(user);
+    await store.actions.authorization.authorization(user);
   };
 
-  const authorization = useSelector(state => state.user.authorization);
-  const token = useSelector(state => state.user.token);
-  const error = useSelector(state => state.user.error);
+  const authorization = useSelector(state => state.authorization.authorization);
+  const token = useSelector(state => state.authorization.token);
+  const error = useSelector(state => state.authorization.error);
 
   if(!localStorage.length && authorization) {
     localStorage.clear();
-    localStorage.setItem('token', JSON.stringify(token));
+    localStorage.setItem('token', token);
   }
 
   if(authorization) {
@@ -59,7 +58,7 @@ function Login() {
                           onPasswordChange={onPasswordChange} onSubmitForm={onSubmitForm}
                           authorization={authorization} error={error} labelTitle={t('form.title')}
                           labelLogin={t('form.login')} labelPassword={t('form.password')}
-                          labelEntry={t('form.entry')}/>
+                          labelEntry={t('form.entry')} side={'start'} padding={'small'}/>
     </PageLayout>
   );
 }

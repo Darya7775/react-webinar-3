@@ -10,11 +10,11 @@ function FormAuthorization(props) {
   return(
     <form className={cn()} action='/api/v1/users/sign' method='post' onSubmit={props.onSubmitForm}>
       <h2 className={cn('title')}>{props.labelTitle}</h2>
-      <div className={cn('wrapper')}>
+      <div className={cn('wrapper', {side: props.side, padding: props.padding})}>
         <label htmlFor='login'>{props.labelLogin}</label>
         <input type='text' id='login' value={props.login} onChange={props.onLoginChange} name='login' required></input>
       </div>
-      <div className={cn('wrapper')}>
+      <div className={cn('wrapper', {side: props.side, padding: props.padding})}>
         <label htmlFor='password'>{props.labelPassword}</label>
         <input type='password' id='password' value={props.password} onChange={props.onPasswordChange} name='password' required></input>
       </div>

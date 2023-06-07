@@ -15,25 +15,19 @@ function Profile() {
   const store = useStore();
   const {t} = useTranslate();
 
-  const token = JSON.parse(localStorage.getItem('token'));
+  const token = useSelector(state => state.authorization.token);
 
   useInit(() => {
-    if(token) {
-      store.actions.user.loading(token);
-    }
+    store.actions.user.loading(token);
   }, [token]);
 
-  const authorization = useSelector(state => state.user.authorization);
+  const authorization = useSelector(state => state.authorization.authorization);
   const user = useSelector(state => ({...state.user.user}));
   const profile = {...user.profile};
 
-  if(authorization) {
-    sessionStorage.setItem('item', JSON.stringify({name: profile.name}))
-  }
-
   const callbacks = {
     // Выход из профиля
-    exit: useCallback((token) => {store.actions.user.exit(token); localStorage.clear(); sessionStorage.clear();}, [store]),
+    exit: useCallback((token) => {store.actions.authorization.exit(token); localStorage.clear();}, [store]),
   }
 
   return(

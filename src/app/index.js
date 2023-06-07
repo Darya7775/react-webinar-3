@@ -7,12 +7,21 @@ import Article from "./article";
 import Login from './login';
 import Profile from './profile';
 import WrapperProfile from '../containers/wrapper-profile';
+import useInit from '../hooks/use-init';
+import useStore from '../hooks/use-store';
 
 /**
  * Приложение
  * @returns {React.ReactElement}
  */
 function App() {
+
+  const store = useStore();
+  const token = localStorage.getItem('token');
+
+  useInit(() => {
+    store.actions.authorization.check(token);
+  }, [token]);
 
   const activeModal = useSelector(state => state.modals.name);
 

@@ -15,25 +15,21 @@ import Header from '../../components/header';
 function Article() {
   const store = useStore();
 
-  const token = JSON.parse(localStorage.getItem('token'));
-
   // Параметры из пути /articles/:id
   const params = useParams();
 
   useInit(() => {
     store.actions.article.load(params.id);
-    if(token) {
-      store.actions.user.loading(token);
-    }
-  }, [params.id, token]);
+  }, [params.id]);
 
   const select = useSelector(state => ({
     article: state.article.data,
     waiting: state.article.waiting,
   }));
 
-  const authorization = useSelector(state => state.user.authorization);
-  const userName = JSON.parse(sessionStorage.getItem('item'));
+  const token = useSelector(state => state.authorization.token);
+  const authorization = useSelector(state => state.authorization.authorization);
+  const userName = useSelector(state => state.authorization.userName);
 
   const {t} = useTranslate();
 
@@ -41,11 +37,11 @@ function Article() {
     // Добавление в корзину
     addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
     // Выход из профиля
-    exit: useCallback((token) => {store.actions.user.exit(token); localStorage.clear(); sessionStorage.clear();}, [store]),
+    exit: useCallback((token) => {store.actions.authorization.exit(token); localStorage.clear();}, [store]),
   }
 
   return (
-    <PageLayout head={<Header isAuthorization={authorization} text={userName.name}
+    <PageLayout head={<Header isAuthorization={authorization} text={userName}
                               onExit={callbacks.exit} token={token}
                               labelEntry={t('header.entry')} labelExit={t('header.exit')} />}>
       <Head title={select.article.title}>

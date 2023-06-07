@@ -15,31 +15,23 @@ function Main() {
 
   const store = useStore();
 
-  const token = JSON.parse(localStorage.getItem('token'));
-
   useInit(() => {
     store.actions.catalog.initParams();
-    if(token) {
-      store.actions.user.loading(token);
-    }
-  }, [token], true);
+  }, [], true);
 
-  const authorization = useSelector(state => state.user.authorization);
-  const userName = useSelector(state => ({...state.user.user.profile}));
-
-  if(!sessionStorage.length && authorization) {
-    sessionStorage.setItem('item', JSON.stringify({name: userName.name}))
-  }
+  const token = useSelector(state => state.authorization.token);
+  const authorization = useSelector(state => state.authorization.authorization);
+  const userName = useSelector(state => state.authorization.userName);
 
   const {t} = useTranslate();
 
   const callbacks = {
     // Выход из профиля
-    exit: useCallback((token) => {store.actions.user.exit(token); localStorage.clear(); sessionStorage.clear();}, [store]),
+    exit: useCallback((token) => {store.actions.authorization.exit(token); localStorage.clear();}, [store]),
   }
 
   return (
-    <PageLayout head={<Header isAuthorization={authorization} text={userName.name}
+    <PageLayout head={<Header isAuthorization={authorization} text={userName}
                               onExit={callbacks.exit} token={token}
                               labelEntry={t('header.entry')} labelExit={t('header.exit')} />}>
       <Head title={t('title')}>
