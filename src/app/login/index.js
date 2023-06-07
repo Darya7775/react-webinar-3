@@ -35,7 +35,7 @@ function Login() {
   const token = useSelector(state => state.authorization.token);
   const error = useSelector(state => state.authorization.error);
 
-  if(!localStorage.length && authorization) {
+  if(authorization) {
     localStorage.clear();
     localStorage.setItem('token', token);
   }
