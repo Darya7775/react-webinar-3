@@ -17,11 +17,10 @@ import useStore from '../hooks/use-store';
 function App() {
 
   const store = useStore();
-  const token = localStorage.getItem('token');
 
   useInit(() => {
-    store.actions.authorization.check(token);
-  }, [token]);
+    store.actions.authorization.check();
+  }, []);
 
   const activeModal = useSelector(state => state.modals.name);
 

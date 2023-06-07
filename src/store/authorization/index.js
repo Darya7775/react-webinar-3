@@ -47,9 +47,10 @@ async authorization(user) {
   }
 }
 
-async check(token) {
+async check() {
   let result;
 
+    const token = localStorage.getItem('token');
     const response = await fetch('/api/v1/users/self', {
       method: 'GET',
       headers: {
@@ -83,7 +84,7 @@ async check(token) {
    * @param token {String} токен пользователя
   */
 
-   async exit(token) {
+  async exit(token) {
 
     let result;
 
