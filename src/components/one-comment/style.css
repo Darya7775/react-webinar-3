@@ -1,0 +1,69 @@
+.OneComment {
+  display: grid;
+  gap: 10px;
+}
+
+.OneComment-wrapper {
+  display: flex;
+  justify-content: start;
+  gap: 10px;
+
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.OneComment-name {
+  font-weight: 700;
+}
+
+.OneComment-date {
+  color: #666666;
+}
+
+.OneComment-text {
+  margin: 0;
+
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.OneComment-button {
+  justify-self: start;
+
+  color: #0087E9;
+  font-size: 12px;
+  line-height: 14px;
+
+  border: none;
+  background-color: #ffffff;
+  padding: 0;
+
+  cursor: pointer;
+  user-select: none;
+}
+
+.OneComment-button:hover {
+  opacity: 0.7;
+}
+
+.OneComment-form {
+  margin-top: 20px;
+  width: 100%;
+  display: grid;
+}
+
+.OneComment-form h3 {
+  margin: 0 0 10px;
+
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.OneComment-form-submit {
+  padding: 1px 10px;
+}
+
+.OneComment-form-reset {
+  padding: 1px 7px;
+}

@@ -63,7 +63,8 @@ if (process.env.NODE_ENV === 'development') {
         secure: false,
         changeOrigin: true,
       }
-    }
+    },
+    open: true
   };
 }
 
