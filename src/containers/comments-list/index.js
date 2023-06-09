@@ -48,7 +48,7 @@ function CommentsList() {
   });
 
   // список комментариев
-  const com = select.comments.map(item => ({_id: item._id, name: users[item.author._id], text: item.text, parent: item.parent._id === params.id ? null : {_id: item.parent._id}, date: getDate(item.dateCreate)}));
+  const com = select.comments.map(item => ({_id: item._id, name: item.author.profile.name, text: item.text, parent: item.parent._id === params.id ? null : {_id: item.parent._id}, date: getDate(item.dateCreate)}));
   const comRend = treeToList(listToTree(com), (item, level) => (
     {_id: item._id, name: item.name, date: item.date, text: item.text, level: '30px'.repeat(level)}
   ));
@@ -81,7 +81,7 @@ function CommentsList() {
                 <Button type='submit' button={t('oneComment.sendAnswer')} />
               </form>
   } else {
-    content = <div><Link to='/login'>Войдите</Link>, чтобы иметь возможность комментировать</div>
+    content = <div><Link to='/login'>{t('oneComment.signIn')}</Link>{t('oneComment.text')}</div>
   }
 
   return (
@@ -93,7 +93,8 @@ function CommentsList() {
                     sendComment={() => dispatch(commentsActions.sendComment(body))} value={text}
                     setActiveComment={() => setActiveComment(index)} active={activeComment}
                     status={select.status} labelAnswer={t('oneComment.answer')} parent={parentId} commentsList={comRend}
-                    labelTitleAnswer={t('oneComment.titleAnswer')} labelSend={t('oneComment.sendAnswer')} labelCancel={t('oneComment.cancelAnswer')}/>
+                    labelTitleAnswer={t('oneComment.titleAnswer')} labelSend={t('oneComment.sendAnswer')} labelCancel={t('oneComment.cancelAnswer')}
+                    labelSingIn={t('oneComment.signIn')} labelText={t('oneComment.text')}/>
       )}
     </SectionComments>
   );

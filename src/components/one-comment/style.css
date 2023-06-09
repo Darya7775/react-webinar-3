@@ -27,13 +27,8 @@
   line-height: 16px;
 }
 
-.OneComment-button {
-  justify-self: start;
-
-  color: #0087E9;
-  font-size: 12px;
-  line-height: 14px;
-
+.OneComment-button,
+.OneComment-button-cancel {
   border: none;
   background-color: #ffffff;
   padding: 0;
@@ -42,7 +37,27 @@
   user-select: none;
 }
 
-.OneComment-button:hover {
+.OneComment-button {
+  justify-self: start;
+  color: #0087E9;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.OneComment-button-cancel {
+  color: #666666;
+  text-decoration-line: underline;
+  font-size: 16px;
+  line-height: 18px;
+}
+
+.OneComment-link {
+  color: #0087E9;
+}
+
+.OneComment-button:hover,
+.OneComment-link:hover,
+.OneComment-button-cancel:hover {
   opacity: 0.7;
 }
 

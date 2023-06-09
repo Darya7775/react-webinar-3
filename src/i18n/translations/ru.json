@@ -27,6 +27,8 @@
   "oneComment.titleAnswer": "Новый ответ",
   "oneComment.sendAnswer": "Отправить",
   "oneComment.cancelAnswer": "Отмена",
+  "oneComment.signIn": "Войдите",
+  "oneComment.text": ", чтобы иметь возможность комментировать. ",
   "comments.title": "Комментарии",
   "formComments.title": "Новый комментарий"
 }

@@ -26,12 +26,13 @@ function OneComment(props) {
                 <Textarea value={props.value} onChangeText={props.onChangeText} placeholder={`Мой ответ для ${userAnswer?.name}`}></Textarea>
                 <div className={cn('wrapper')}>
                   <button className={cn('form-submit')} type='submit'>{props.labelSend}</button>
-                  <button className={cn('form-reset')} type='reset' onClick={() => props.onChangeText(' ')}>{props.labelCancel}</button>
+                  <button className={cn('form-reset')} type='reset' onClick={() => props.setSeeItem(false)}>{props.labelCancel}</button>
                 </div>
               </form>
   } else {
     content = <div>
-                <Link to='/login'>Войдите</Link>, чтобы иметь возможность комментировать
+                <Link className={cn('link')} to='/login'>{props.labelSingIn}</Link>{props.labelText}
+                <button className={cn('button-cancel')} type='button' onClick={() => props.setSeeItem(false)}>{props.labelCancel}</button>
               </div>
   }
 
@@ -82,7 +83,9 @@ OneComment.defaultProps = {
   labelAnswer: 'Ответить',
   labelTitleAnswer: 'Новый ответ',
   labelSend: 'Отправить',
-  labelCancel: 'Отмена'
+  labelCancel: 'Отмена',
+  labelSingIn: 'Войдите',
+  labelText: ', чтобы иметь возможность комментировать.',
 }
 
 export default memo(OneComment);

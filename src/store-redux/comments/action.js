@@ -11,7 +11,7 @@ export default {
 
       try {
         const res = await services.api.request({
-          url: `/api/v1/comments?search[parent]=${id}&limit=*`
+          url: `/api/v1/comments?search[parent]=${id}&limit=*&fields=items(_id,text,dateCreate,author(profile(name)),parent(_id,_type)),count`
         });
         // Комментарии загружен успешно
         dispatch({type: 'comments/load-success', payload: {comments: res.data.result.items}});

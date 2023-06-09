@@ -25,6 +25,8 @@
   "oneComment.titleAnswer": "New answer",
   "oneComment.sendAnswer": "Send",
   "oneComment.cancelAnswer": "Cancel",
+  "oneComment.text": " to be able to comment. ",
+  "oneComment.signIn": "Sign In",
   "comments.title": "Comments",
   "formComments.title": "New comment"
 }

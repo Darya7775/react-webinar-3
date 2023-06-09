@@ -10,7 +10,7 @@ export default {
 
       try {
         const res = await services.api.request({
-          url: '/api/v1/users'
+          url: '/api/v1/users?fields=items(_id,profile(name))'
         });
         // Пользователи загружены успешно
         dispatch({type: 'users/load-success', payload: {users: res.data.result.items}});
