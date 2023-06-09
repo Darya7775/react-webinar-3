@@ -1,5 +1,6 @@
 .OneComment {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
 }
 
@@ -38,7 +39,7 @@
 }
 
 .OneComment-button {
-  justify-self: start;
+  align-self: flex-start;
   color: #0087E9;
   font-size: 12px;
   line-height: 14px;

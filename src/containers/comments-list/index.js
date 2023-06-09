@@ -1,9 +1,7 @@
 import React, {useState, memo, useCallback} from 'react';
 import {useParams, Link} from 'react-router-dom';
 import useSelector from '../../hooks/use-selector';
-import usersActions from '../../store-redux/users/actions';
 import useTranslate from '../../hooks/use-translate';
-import useInit from '../../hooks/use-init';
 import {useDispatch, useSelector as useSelectorRedux} from 'react-redux';
 import shallowequal from 'shallowequal';
 import OneComment from '../../components/one-comment';
@@ -26,10 +24,6 @@ function CommentsList() {
   const [text, setText] = useState('');
   const [activeComment, setActiveComment] = useState(Number);
   const [seeItem, setSeeItem] = useState(false);
-
-  useInit(() => {
-    dispatch(usersActions.load());
-  }, []);
 
   const select = useSelectorRedux(state => ({
     comments: state.comments.comments,

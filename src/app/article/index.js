@@ -14,6 +14,7 @@ import {useDispatch, useSelector as useSelectorRedux} from 'react-redux';
 import shallowequal from 'shallowequal';
 import articleActions from '../../store-redux/article/actions';
 import commentsActions from '../../store-redux/comments/action';
+import usersActions from '../../store-redux/users/actions';
 import CommentsList from '../../containers/comments-list';
 
 function Article() {
@@ -24,10 +25,13 @@ function Article() {
   // Параметры из пути /articles/:id
   const params = useParams();
 
-  useInit(() => {
-    //store.actions.article.load(params.id);
-    dispatch(commentsActions.load(params.id));
-    dispatch(articleActions.load(params.id));
+  useInit(async () => {
+    await Promise.all([
+      //store.actions.article.load(params.id);
+      dispatch(commentsActions.load(params.id)),
+      dispatch(articleActions.load(params.id)),
+      dispatch(usersActions.load())
+    ]);
   }, [params.id]);
 
   const select = useSelectorRedux(state => ({
