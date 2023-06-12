@@ -34,22 +34,24 @@ OneComment.propTypes = {
     level: PropTypes.string,
     name: PropTypes.string,
     date: PropTypes.string,
+    text: PropTypes.string,
   }).isRequired,
   setSeeItem: PropTypes.func,
   onParentId: PropTypes.func,
   getParentComment: PropTypes.func,
-  saveLocal: PropTypes.func,
   index: PropTypes.number,
   seeItem: PropTypes.bool,
   user: PropTypes.string,
-  content: PropTypes.element
+  idChildren: PropTypes.string,
+  content: PropTypes.element,
+  com: PropTypes.array,
+  labelAnswer: PropTypes.string,
 };
 
 OneComment.defaultProps = {
   setSeeItem: () => {},
   onParentId: () => {},
   getParentComment: () => {},
-  saveLocal: () => {},
   labelAnswer: 'Ответить',
   content: <div></div>
 }

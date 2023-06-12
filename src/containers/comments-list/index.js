@@ -102,7 +102,7 @@ function CommentsList() {
   let content;
   if(authorization) {
     content = seeItem ? (
-      <Wrapper margin='top-bottom'>
+      <Wrapper margin='top'>
         <form ref={form} action='/api/v1/comments?fields=*,author(profile)' method='post' onSubmit={callbacks.onSubmit}>
           <Title title={t('oneComment.titleAnswer')} />
           <Textarea class='Textarea_comment' value={text} onChangeText={callbacks.onChangeText} placeholder={`Мой ответ для ${userAnswer?.name}`}></Textarea>
@@ -134,11 +134,10 @@ function CommentsList() {
   return (
     <SectionComments quantyty={comRend.length} content={content} seeItem={seeItem} labelComments={t('comments.title')}>
       {comRend.map((comment, index) =>
-        <OneComment comment={comment} key={index} index={index} setSeeItem={setSeeItem} seeItem={seeItem} saveLocal={callbacks.saveLocal}
+        <OneComment comment={comment} key={index} index={index} setSeeItem={setSeeItem} seeItem={seeItem}
                     onParentId={() => setParentId({'_id': comment._id, '_type': 'comment'})} com={com} content={content}
-                    authorization={authorization} getParentComment={callbacks.getParentComment} idChildren={idChildren}
-                    sendComment={() => dispatch(commentsActions.sendComment(body))} value={text}
-                    user={authorizedUser?.profile?.name} status={select.status} labelAnswer={t('oneComment.answer')} commentsList={comRend}/>
+                    getParentComment={callbacks.getParentComment} idChildren={idChildren} user={authorizedUser?.profile?.name}
+                    labelAnswer={t('oneComment.answer')}/>
       )}
     </SectionComments>
   );

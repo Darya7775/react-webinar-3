@@ -2,8 +2,8 @@
   display: block;
   box-sizing: border-box;
   width: 100%;
-  height: 66px;
-  margin-bottom: 5px;
+  height: 76px;
+  margin-bottom: 10px;
   padding: 4px 5px;
 
   border: 1px solid #666666;
@@ -20,7 +20,5 @@
 }
 
 .Textarea_comment {
-  height: 81px;
-
-  margin-bottom: 10px;
+  height: 80px;
 }
