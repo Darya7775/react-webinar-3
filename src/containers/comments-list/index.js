@@ -1,5 +1,5 @@
 import React, {useState, memo, useCallback} from 'react';
-import {useParams, Link} from 'react-router-dom';
+import {useParams, useNavigate, useLocation} from 'react-router-dom';
 import useSelector from '../../hooks/use-selector';
 import useTranslate from '../../hooks/use-translate';
 import {useDispatch, useSelector as useSelectorRedux} from 'react-redux';
@@ -8,6 +8,8 @@ import OneComment from '../../components/one-comment';
 import getDate from '../../utils/date';
 import treeToList from '../../utils/tree-to-list';
 import listToTree from '../../utils/list-to-tree';
+import list from '../../utils/list';
+import getIdChildren from '../../utils/id-children';
 import SectionComments from '../../components/section-comments';
 import commentsActions from '../../store-redux/comments/action';
 import Textarea from '../../components/textarea';
@@ -17,13 +19,15 @@ import Button from '../../components/button';
 function CommentsList() {
   const dispatch = useDispatch();
   const params = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   console.log('commentList')
 
   const [parentId, setParentId] = useState({});
   const [text, setText] = useState('');
-  const [activeComment, setActiveComment] = useState(Number);
   const [seeItem, setSeeItem] = useState(false);
+  const [idChildren, setIdChildren] = useState('');
 
   const select = useSelectorRedux(state => ({
     comments: state.comments.comments,
@@ -32,6 +36,7 @@ function CommentsList() {
   }), shallowequal); // Нужно указать функцию для сравнения свойства объекта, так как хуком вернули объект
 
   const authorization = useSelector(state => state.session.exists);
+  const authorizedUser = useSelector(state => state.session.user);
 
   const {t} = useTranslate();
 
@@ -44,8 +49,9 @@ function CommentsList() {
   // список комментариев
   const com = select.comments.map(item => ({_id: item._id, name: item.author.profile.name, text: item.text, parent: item.parent._id === params.id ? null : {_id: item.parent._id}, date: getDate(item.dateCreate)}));
   const comRend = treeToList(listToTree(com), (item, level) => (
-    {_id: item._id, name: item.name, date: item.date, text: item.text, level: '30px'.repeat(level)}
-  ));
+    {_id: item._id, name: item.name, date: item.date, text: item.text, level: level < 13 ? '30px'.repeat(level) : '30px'.repeat(13)}
+    )
+  );
 
   const body = {
     'text': text,
@@ -61,9 +67,22 @@ function CommentsList() {
     // Отправка одного комментария
     onSubmit: useCallback((e) => {
       e.preventDefault();
-      dispatch(commentsActions.sendComment(body));
-      setText('');
-    }, [body])
+      if(text.trim()) {
+        dispatch(commentsActions.sendComment(body));
+        setText('');
+      }
+    }, [body, text]),
+
+    // получение id ребенка, после которого отображать форму
+    getParentComment: useCallback((id, com) => {
+      const listCh = list(com)[id];
+      setIdChildren(listCh ? getIdChildren(listCh) : id);
+    }, []),
+
+    // сохранение ссылки для back
+    saveLocal: useCallback(() => {
+      navigate('/login', {state: { back: location.pathname }})
+    }, [])
   };
 
   let content;
@@ -72,21 +91,20 @@ function CommentsList() {
                 <Title title={t('formComments.title')} />
                 <Textarea value={text} onParentId={() => {setParentId({'_id':params.id, '_type': 'article'})}}
                           onChangeText={callbacks.onChangeText} placeholder='Текст'></Textarea>
-                <Button type='submit' button={t('oneComment.sendAnswer')} />
+                <Button type='submit' button={t('oneComment.sendAnswer')} class='Button' />
               </form>
   } else {
-    content = <div><Link to='/login'>{t('oneComment.signIn')}</Link>{t('oneComment.text')}</div>
+    content = <div><Button type='button' onClick={callbacks.saveLocal} button={t('oneComment.signIn')} class='Button-link' />{t('oneComment.text')}</div>
   }
 
   return (
     <SectionComments quantyty={comRend.length} content={content} seeItem={seeItem} labelComments={t('comments.title')}>
       {comRend.map((comment, index) =>
-        <OneComment comment={comment} key={index} index={index} setSeeItem={setSeeItem} seeItem={seeItem}
-                    onParentId={() => setParentId({'_id': comment._id, '_type': 'comment'})}
-                    onChangeText={callbacks.onChangeText} authorization={authorization}
+        <OneComment comment={comment} key={index} index={index} setSeeItem={setSeeItem} seeItem={seeItem} saveLocal={callbacks.saveLocal}
+                    onParentId={() => setParentId({'_id': comment._id, '_type': 'comment'})} com={com}
+                    onChangeText={callbacks.onChangeText} authorization={authorization} getParentComment={callbacks.getParentComment} idChildren={idChildren}
                     sendComment={() => dispatch(commentsActions.sendComment(body))} value={text}
-                    setActiveComment={() => setActiveComment(index)} active={activeComment}
-                    status={select.status} labelAnswer={t('oneComment.answer')} parent={parentId} commentsList={comRend}
+                    user={authorizedUser?.profile?.name} status={select.status} labelAnswer={t('oneComment.answer')} parent={parentId} commentsList={comRend}
                     labelTitleAnswer={t('oneComment.titleAnswer')} labelSend={t('oneComment.sendAnswer')} labelCancel={t('oneComment.cancelAnswer')}
                     labelSingIn={t('oneComment.signIn')} labelText={t('oneComment.text')}/>
       )}

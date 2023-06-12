@@ -17,6 +17,10 @@
   font-weight: 700;
 }
 
+.OneComment-name_grey {
+  color: #666666;
+}
+
 .OneComment-date {
   color: #666666;
 }
@@ -26,10 +30,13 @@
 
   font-size: 14px;
   line-height: 16px;
+
+  overflow-wrap: break-word;
 }
 
 .OneComment-button,
-.OneComment-button-cancel {
+.OneComment-button-cancel,
+.OneComment-button-singin {
   border: none;
   background-color: #ffffff;
   padding: 0;
@@ -52,13 +59,17 @@
   line-height: 18px;
 }
 
-.OneComment-link {
+.OneComment-button-singin {
+  text-decoration-line: underline;
+  font-size: 16px;
+  line-height: 18px;
   color: #0087E9;
 }
 
 .OneComment-button:hover,
 .OneComment-link:hover,
-.OneComment-button-cancel:hover {
+.OneComment-button-cancel:hover,
+.OneComment-button-singin:hover {
   opacity: 0.7;
 }
 

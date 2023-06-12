@@ -1,5 +1,4 @@
-import React, {memo} from 'react';
-import {Link} from 'react-router-dom';
+import React, {memo, useRef, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {cn as bem} from '@bem-react/classname';
 import Textarea from '../../components/textarea';
@@ -9,19 +8,31 @@ function OneComment(props) {
 
   const userAnswer = props.commentsList.find(item => item._id === props.parent._id);
 
+  const form = useRef(null);
+
+  useEffect(() => {
+    if(form.current) {
+      form.current.scrollIntoView({
+          behavior: "smooth"
+      });
+    }
+  }, [form.current]);
+
   const cn = bem('OneComment');
 
   async function onSubmit(e) {
     e.preventDefault();
-    await props.sendComment();
-    props.setSeeItem(false);
-    props.onChangeText(' ');
+    if(props.value.trim()) {
+      await props.sendComment();
+      props.setSeeItem(false);
+      props.onChangeText(' ');
+    }
   };
 
   let content;
 
   if(props.authorization) {
-    content = <form className={cn('form')} action='/api/v1/comments?fields=*,author(profile)' method='post' onSubmit={onSubmit}>
+    content = <form ref={form} className={cn('form')} action='/api/v1/comments?fields=*,author(profile)' method='post' onSubmit={onSubmit}>
                 <h3>{props.labelTitleAnswer}</h3>
                 <Textarea value={props.value} onChangeText={props.onChangeText} placeholder={`Мой ответ для ${userAnswer?.name}`}></Textarea>
                 <div className={cn('wrapper')}>
@@ -30,8 +41,8 @@ function OneComment(props) {
                 </div>
               </form>
   } else {
-    content = <div>
-                <Link className={cn('link')} to='/login'>{props.labelSingIn}</Link>{props.labelText}
+    content = <div ref={form}>
+                <button className={cn('button-singin')} type='button' onClick={props.saveLocal}>{props.labelSingIn}</button>{props.labelText}
                 <button className={cn('button-cancel')} type='button' onClick={() => props.setSeeItem(false)}>{props.labelCancel}</button>
               </div>
   }
@@ -40,16 +51,18 @@ function OneComment(props) {
   let sumMargin = 0;
   props.comment.level.split('px').forEach(item => sumMargin +=Number(item))
 
+  const grey = props.user === props.comment.name ? 'OneComment-name_grey' : '';
+
   return(
     <>
       <li className={cn()} key={props.index} style={{marginLeft: sumMargin + 'px'}}>
         <div className={cn('wrapper')}>
-          <span className={cn('name')}>{props.comment.name}</span>
+          <span className={cn('name', grey)}>{props.comment.name}</span>
           <span className={cn('date')}>{props.comment.date}</span>
         </div>
         <p className={cn('text')}>{props.comment.text}</p>
-        <button className={cn('button')} type='button' onClick={() => {props.setActiveComment(); props.setSeeItem(true); props.onParentId();}}>{props.labelAnswer}</button>
-        {props.index === props.active && props.seeItem ? content : null}
+        <button className={cn('button')} type='button' onClick={() => {props.setSeeItem(true); props.onParentId(); props.getParentComment(props.comment._id, props.com);}}>{props.labelAnswer}</button>
+        {props.seeItem && props.idChildren === props.comment._id ? content : null}
       </li>
     </>
   );
@@ -57,6 +70,7 @@ function OneComment(props) {
 
 OneComment.propTypes = {
   comment: PropTypes.shape({
+    _id: PropTypes.string,
     level: PropTypes.string,
     name: PropTypes.string,
     date: PropTypes.string,
@@ -65,13 +79,14 @@ OneComment.propTypes = {
   setSeeItem: PropTypes.func,
   onChangeText: PropTypes.func,
   onParentId: PropTypes.func,
-  setActiveComment: PropTypes.func,
+  getParentComment: PropTypes.func,
+  saveLocal: PropTypes.func,
   value: PropTypes.string,
   index: PropTypes.number,
-  activ: PropTypes.number,
   seeItem: PropTypes.bool,
   commentsList: PropTypes.array,
-  parent: PropTypes.object
+  parent: PropTypes.object,
+  user: PropTypes.string,
 };
 
 OneComment.defaultProps = {
@@ -79,7 +94,8 @@ OneComment.defaultProps = {
   setSeeItem: () => {},
   onChangeText: () => {},
   onParentId: () => {},
-  setActiveComment: () => {},
+  getParentComment: () => {},
+  saveLocal: () => {},
   labelAnswer: 'Ответить',
   labelTitleAnswer: 'Новый ответ',
   labelSend: 'Отправить',

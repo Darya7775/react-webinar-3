@@ -21,6 +21,8 @@ function Login() {
   const navigate = useNavigate();
   const store = useStore();
 
+  console.log(location)
+
   useInit(() => {
     store.actions.session.resetErrors();
   })

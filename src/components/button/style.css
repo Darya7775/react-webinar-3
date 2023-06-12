@@ -1,3 +1,17 @@
 .Button {
   padding: 0 10px;
 }
+
+.Button-link {
+  text-decoration-line: underline;
+  font-size: 16px;
+  line-height: 18px;
+  color: #0087E9;
+
+  border: none;
+  background-color: #ffffff;
+  padding: 0;
+
+  cursor: pointer;
+  user-select: none;
+}
