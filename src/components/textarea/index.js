@@ -24,7 +24,7 @@ function Textarea(props) {
 
   return (
     <textarea
-      className='Textarea'
+      className={`Textarea ${props.class}`}
       value={value}
       placeholder={props.placeholder}
       onChange={onChange}
@@ -38,11 +38,13 @@ Textarea.propTypes = {
   placeholder: PropTypes.string,
   onParentId: PropTypes.func,
   onChangeText: PropTypes.func,
+  class: PropTypes.string
 }
 
 Textarea.defaultProps = {
   onParentId: () => {},
   onChangeText: () => {},
+  class: ''
 }
 
 export default memo(Textarea);

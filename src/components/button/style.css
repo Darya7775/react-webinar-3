@@ -15,3 +15,22 @@
   cursor: pointer;
   user-select: none;
 }
+
+.Button-link_grey {
+  text-decoration-line: underline;
+  font-size: 16px;
+  line-height: 18px;
+  color: #666666;
+
+  border: none;
+  background-color: #ffffff;
+  padding: 0;
+
+  cursor: pointer;
+  user-select: none;
+}
+
+.Button-link:hover,
+.Button-link_grey:hover {
+  opacity: 0.7;
+}

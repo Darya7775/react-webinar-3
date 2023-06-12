@@ -1,4 +1,4 @@
-import React, {useState, memo, useCallback} from 'react';
+import React, {useState, memo, useCallback, useRef, useEffect} from 'react';
 import {useParams, useNavigate, useLocation} from 'react-router-dom';
 import useSelector from '../../hooks/use-selector';
 import useTranslate from '../../hooks/use-translate';
@@ -15,6 +15,7 @@ import commentsActions from '../../store-redux/comments/action';
 import Textarea from '../../components/textarea';
 import Title from '../../components/title';
 import Button from '../../components/button';
+import Wrapper from '../../components/wrapper';
 
 function CommentsList() {
   const dispatch = useDispatch();
@@ -22,12 +23,22 @@ function CommentsList() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const form = useRef(null);
+
   console.log('commentList')
 
   const [parentId, setParentId] = useState({});
   const [text, setText] = useState('');
   const [seeItem, setSeeItem] = useState(false);
   const [idChildren, setIdChildren] = useState('');
+
+  useEffect(() => {
+    if(form.current && seeItem) {
+      form.current.scrollIntoView({
+          behavior: "smooth"
+      });
+    }
+  }, [form.current]);
 
   const select = useSelectorRedux(state => ({
     comments: state.comments.comments,
@@ -70,6 +81,7 @@ function CommentsList() {
       if(text.trim()) {
         dispatch(commentsActions.sendComment(body));
         setText('');
+        setSeeItem(false);
       }
     }, [body, text]),
 
@@ -85,28 +97,48 @@ function CommentsList() {
     }, [])
   };
 
+  const userAnswer = comRend.find(item => item._id === parentId._id);
+
   let content;
   if(authorization) {
-    content = <form action="/api/v1/comments?fields=*,author(profile)" method="post" onSubmit={callbacks.onSubmit}>
-                <Title title={t('formComments.title')} />
-                <Textarea value={text} onParentId={() => {setParentId({'_id':params.id, '_type': 'article'})}}
-                          onChangeText={callbacks.onChangeText} placeholder='Текст'></Textarea>
-                <Button type='submit' button={t('oneComment.sendAnswer')} class='Button' />
-              </form>
+    content = seeItem ? (
+      <Wrapper margin='top-bottom'>
+        <form ref={form} action='/api/v1/comments?fields=*,author(profile)' method='post' onSubmit={callbacks.onSubmit}>
+          <Title title={t('oneComment.titleAnswer')} />
+          <Textarea class='Textarea_comment' value={text} onChangeText={callbacks.onChangeText} placeholder={`Мой ответ для ${userAnswer?.name}`}></Textarea>
+          <Wrapper>
+            <Button type='submit' button={t('oneComment.sendAnswer')} class='Button' />
+            <Button type='reset' onClick={() => setSeeItem(false)} button={t('oneComment.cancelAnswer')} class='Button' />
+          </Wrapper>
+        </form>
+      </Wrapper>
+    ) : (
+      <form ref={form} action="/api/v1/comments?fields=*,author(profile)" method="post" onSubmit={callbacks.onSubmit}>
+        <Title title={t('formComments.title')} />
+        <Textarea value={text} onParentId={() => {setParentId({'_id':params.id, '_type': 'article'})}}
+                  onChangeText={callbacks.onChangeText} placeholder='Текст'></Textarea>
+        <Button type='submit' button={t('oneComment.sendAnswer')} class='Button' />
+      </form>
+    )
   } else {
-    content = <div><Button type='button' onClick={callbacks.saveLocal} button={t('oneComment.signIn')} class='Button-link' />{t('oneComment.text')}</div>
+    content = seeItem ? (
+      <div ref={form}>
+        <Button type='button' onClick={callbacks.saveLocal} button={t('oneComment.signIn')} class='Button-link' />{t('oneComment.text')}
+        <Button class='Button-link_grey' type='button' onClick={() => setSeeItem(false)} button={t('oneComment.cancelAnswer')}/>
+      </div>
+    ) : (
+      <div ref={form}><Button type='button' onClick={callbacks.saveLocal} button={t('oneComment.signIn')} class='Button-link' />{t('oneComment.text')}</div>
+    )
   }
 
   return (
     <SectionComments quantyty={comRend.length} content={content} seeItem={seeItem} labelComments={t('comments.title')}>
       {comRend.map((comment, index) =>
         <OneComment comment={comment} key={index} index={index} setSeeItem={setSeeItem} seeItem={seeItem} saveLocal={callbacks.saveLocal}
-                    onParentId={() => setParentId({'_id': comment._id, '_type': 'comment'})} com={com}
-                    onChangeText={callbacks.onChangeText} authorization={authorization} getParentComment={callbacks.getParentComment} idChildren={idChildren}
+                    onParentId={() => setParentId({'_id': comment._id, '_type': 'comment'})} com={com} content={content}
+                    authorization={authorization} getParentComment={callbacks.getParentComment} idChildren={idChildren}
                     sendComment={() => dispatch(commentsActions.sendComment(body))} value={text}
-                    user={authorizedUser?.profile?.name} status={select.status} labelAnswer={t('oneComment.answer')} parent={parentId} commentsList={comRend}
-                    labelTitleAnswer={t('oneComment.titleAnswer')} labelSend={t('oneComment.sendAnswer')} labelCancel={t('oneComment.cancelAnswer')}
-                    labelSingIn={t('oneComment.signIn')} labelText={t('oneComment.text')}/>
+                    user={authorizedUser?.profile?.name} status={select.status} labelAnswer={t('oneComment.answer')} commentsList={comRend}/>
       )}
     </SectionComments>
   );

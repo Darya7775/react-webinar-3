@@ -1,0 +1,13 @@
+.Wrapper {
+  display: flex;
+  justify-content: start;
+  gap: 10px;
+}
+
+.Wrapper_margin_top-bottom {
+  margin: 20px 0;
+}
+
+.Wrapper form {
+  width: 100%;
+}

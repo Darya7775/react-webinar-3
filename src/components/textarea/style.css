@@ -18,3 +18,9 @@
   line-height: 16px;
   color: #000000;
 }
+
+.Textarea_comment {
+  height: 81px;
+
+  margin-bottom: 10px;
+}
