@@ -42,6 +42,7 @@ OneComment.propTypes = {
   index: PropTypes.number,
   seeItem: PropTypes.bool,
   user: PropTypes.string,
+  content: PropTypes.element
 };
 
 OneComment.defaultProps = {
@@ -50,6 +51,7 @@ OneComment.defaultProps = {
   getParentComment: () => {},
   saveLocal: () => {},
   labelAnswer: 'Ответить',
+  content: <div></div>
 }
 
 export default memo(OneComment);
