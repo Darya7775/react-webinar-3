@@ -97,6 +97,7 @@ function CommentsList() {
     }, [])
   };
 
+  // имя пользователя, которму отвечаем
   const userAnswer = comRend.find(item => item._id === parentId._id);
 
   let content;
