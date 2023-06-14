@@ -15,8 +15,13 @@ const config = {
       }
     }
   },
+
   api: {
     baseUrl: ''
+  },
+
+  translate: {
+    defaultLanguage: navigator.language.split('-')[0] || 'ru'  // язык по умолчанию
   }
 }
 

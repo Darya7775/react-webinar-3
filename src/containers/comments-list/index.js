@@ -106,7 +106,7 @@ function CommentsList() {
       <Wrapper margin='top'>
         <form ref={form} action='/api/v1/comments?fields=*,author(profile)' method='post' onSubmit={callbacks.onSubmit}>
           <Title title={t('oneComment.titleAnswer')} />
-          <Textarea class='Textarea_comment' value={text} onChangeText={callbacks.onChangeText} placeholder={`Мой ответ для ${userAnswer?.name}`}></Textarea>
+          <Textarea class='Textarea_comment' value={text} onChangeText={callbacks.onChangeText} placeholder={`${t('formComments.placeholderUser')}${userAnswer?.name}`}></Textarea>
           <Wrapper>
             <Button type='submit' button={t('oneComment.sendAnswer')} class='Button' />
             <Button type='reset' onClick={() => setSeeItem(false)} button={t('oneComment.cancelAnswer')} class='Button' />
@@ -117,7 +117,7 @@ function CommentsList() {
       <form ref={form} action="/api/v1/comments?fields=*,author(profile)" method="post" onSubmit={callbacks.onSubmit}>
         <Title title={t('formComments.title')} />
         <Textarea value={text} onParentId={() => {setParentId({'_id':params.id, '_type': 'article'})}}
-                  onChangeText={callbacks.onChangeText} placeholder='Текст'></Textarea>
+                  onChangeText={callbacks.onChangeText} placeholder={t('formComments.placeholder')}></Textarea>
         <Button type='submit' button={t('oneComment.sendAnswer')} class='Button' />
       </form>
     )

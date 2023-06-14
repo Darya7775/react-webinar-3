@@ -16,6 +16,10 @@
     "other": "товара"
   },
   "article.add": "Добавить",
+  "article.country": "Страна производитель",
+  "article.category": "Категория",
+  "article.year": "Год выпуска",
+  "article.price": "Цена",
   "filter.reset": "Сбросить",
   "auth.title": "Вход",
   "auth.login": "Логин",
@@ -30,5 +34,16 @@
   "oneComment.signIn": "Войдите",
   "oneComment.text": ", чтобы иметь возможность комментировать. ",
   "comments.title": "Комментарии",
-  "formComments.title": "Новый комментарий"
+  "formComments.title": "Новый комментарий",
+  "formComments.placeholder": "Текст",
+  "formComments.placeholderUser": "Мой ответ для ",
+  "profile.title": "Профиль",
+  "profile.name": "Имя",
+  "profile.telephone": "Телефон",
+  "categories.all": "Все",
+  "categories.order": "По порядку",
+  "categories.name": "По именованию",
+  "categories.dear": "Сначала дорогие",
+  "categories.ancient": "Древние",
+  "search": "Поиск"
 }

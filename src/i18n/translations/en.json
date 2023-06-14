@@ -14,6 +14,10 @@
     "other": "articles"
   },
   "article.add": "Add",
+  "article.country": "Manufacturer country",
+  "article.category": "Category",
+  "article.year": "Year of issue",
+  "article.price": "Price",
   "filter.reset": "Reset",
   "auth.title": "Sign In",
   "auth.login": "Login",
@@ -28,5 +32,16 @@
   "oneComment.text": " to be able to comment. ",
   "oneComment.signIn": "Sign In",
   "comments.title": "Comments",
-  "formComments.title": "New comment"
+  "formComments.title": "New comment",
+  "formComments.placeholder": "Text",
+  "formComments.placeholderUser": "My answer for ",
+  "profile.title": "Profile",
+  "profile.name": "Name",
+  "profile.telephone": "Telephone",
+  "categories.all": "All",
+  "categories.order": "In order",
+  "categories.name": "By name",
+  "categories.dear": "Dear ones first",
+  "categories.ancient": "Ancient",
+  "search": "Search"
 }
